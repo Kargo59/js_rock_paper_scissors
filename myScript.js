@@ -2,9 +2,9 @@ function computerPlay() {
     const options = ['rock', 'paper', 'scissors'];
     // choose a random element from the array
     let chosen = Math.floor(Math.random() * options.length);
-    chosen = options[chosen];
+    computerSelection = options[chosen];
     // console.log(chosen);
-    return chosen
+    return computerSelection;
 };
 
 
@@ -12,37 +12,81 @@ function computerPlay() {
 let score_player = 0;
 let score_computer = 0;
 
-function game(){
-    for (let i = 0; i <5; i++) {
-        const computerSelection = computerPlay();
+// function game(){
+//     for (let i = 0; i <5; i++) {
+//         const computerSelection = computerPlay();
 
-        let playerSelection = prompt('Rock, paper, scissors?').toLowerCase();
+//         let playerSelection = prompt('Rock, paper, scissors?').toLowerCase();
 
-        playRound(playerSelection, computerSelection);
+//         playRound(playerSelection, computerSelection);
 
-    }
+//     }
 
-    if (score_player > score_computer) {
-        alert('You win the game!');
-    } else if (score_computer > score_player) {
-        alert ('You lose the game!');
-    }else if (score_player === score_computer) {
-        alert('Nobody wins the game!');
-    }
+//     if (score_player > score_computer) {
+//         alert('You win the game!');
+//     } else if (score_computer > score_player) {
+//         alert ('You lose the game!');
+//     }else if (score_player === score_computer) {
+//         alert('Nobody wins the game!');
+//     }
+// }
+
+const button_rock = document.querySelector('#rock');
+const button_paper = document.querySelector('#paper');
+const button_scissors = document.querySelector('#scissors');
+
+
+function displayCurrentScore () {
+    //displays the current results, first line
+    const score_paragraph = document.getElementById('current_score');
+    const text = document.createTextNode('Player: ' + score_player + '   Computer: ' + score_computer)
+    score_paragraph.textContent = ' ';
+    score_paragraph.appendChild(text);
+
+    //displays the current round, second line
+    const round_paragraph = document.querySelector('#current_round');
+    text_round_number = document.createTextNode(`Current round: ${number_of_rounds}`);
+    round_paragraph.textContent = ' ';
+    round_paragraph.appendChild(text_round_number);
 }
 
-function playRound(playerSelection, computerSelection) {
+
+button_rock.addEventListener('click', () => {
+    let playerSelection = 'rock';
+    playRound(playerSelection);
+    displayCurrentScore();
+});
+
+button_paper.addEventListener('click', () => {
+    let playerSelection = 'paper';
+    playRound(playerSelection);
+    displayCurrentScore();    
+});
+
+button_scissors.addEventListener('click', () => {
+    let playerSelection = 'scissors';
+    playRound(playerSelection);
+    displayCurrentScore();    
+});
+
+// the game will stop after five rounds. function playRound() modifies the variable number_of_rounds
+let number_of_rounds = 0
+
+function playRound(playerSelection) {
+    computerPlay();
+    console.log('The computer chose ' + computerSelection)
+
     if (playerSelection === 'rock') {
         if (computerSelection === 'rock') {
             alert('It\'s a draw!');
         }
         else if (computerSelection === 'paper') {
-            alert('You win!');
-            score_player += 1
+            alert('You lose!');
+            score_computer += 1
         }
         else if (computerSelection === 'scissors') {
-            alert('You lose!');
-            score_computer += 1;
+            alert('You win!');
+            score_player += 1;
         }  
     }
 
@@ -75,7 +119,17 @@ function playRound(playerSelection, computerSelection) {
     
     console.log(playerSelection, computerSelection);
     console.log(score_player, score_computer)
-}
 
-//initializes the game
-game()
+    number_of_rounds += 1
+
+    //determines the end result after five games
+    if (number_of_rounds === 5) {
+        if (score_player > score_computer) {
+        alert('You win the game!');
+    } else if (score_computer > score_player) {
+        alert ('You lose the game!');
+    }else if (score_player === score_computer) {
+        alert('Nobody wins the game!');
+        }
+    }
+}
